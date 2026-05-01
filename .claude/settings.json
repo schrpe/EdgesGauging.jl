@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(julia --version)",
+      "Bash(julia --project=. -e 'using Pkg; Pkg.instantiate\\(\\)')"
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(julia --project=D:/schrpe/Edges.jl D:/schrpe/Edges.jl/test/runtests.jl)"
+    ]
+  }
+}
