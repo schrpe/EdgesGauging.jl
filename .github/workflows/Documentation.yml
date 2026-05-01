@@ -18,9 +18,9 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using Edges
-            DocMeta.setdocmeta!(Edges, :DocTestSetup, :(using Edges); recursive=true)
-            doctest(Edges)'
+            using EdgesGauging
+            DocMeta.setdocmeta!(EdgesGauging, :DocTestSetup, :(using EdgesGauging); recursive=true)
+            doctest(EdgesGauging)'
       - run: julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

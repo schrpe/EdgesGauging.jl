@@ -1,8 +1,8 @@
 ```@meta
-CurrentModule = Edges
+CurrentModule = EdgesGauging
 ```
 
-# Edges.jl
+# EdgesGauging.jl
 
 Sub-pixel edge detection and robust geometric fitting (lines, circles) for
 machine-vision gauging tasks, written in pure Julia.
@@ -21,7 +21,7 @@ machine-vision gauging tasks, written in pure Julia.
 ## Quick start
 
 ```julia
-using Edges
+using EdgesGauging
 
 result = gauge_edges_in_profile(profile, 2.0, 0.1,
                                 POLARITY_POSITIVE, SELECT_BEST)

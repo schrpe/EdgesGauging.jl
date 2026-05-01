@@ -1,4 +1,4 @@
-# Edges.jl
+# EdgesGauging.jl
 
 Sub-pixel edge detection and robust geometric fitting (lines, circles) for
 machine-vision gauging tasks, written in pure Julia.
@@ -22,15 +22,15 @@ machine-vision gauging tasks, written in pure Julia.
 ## Install
 
 ```julia
-] add https://github.com/schrpe/Edges.jl
+] add https://github.com/schrpe/EdgesGauging.jl
 ```
 
-(Once registered in the General registry: `] add Edges`.)
+(Once registered in the General registry: `] add EdgesGauging`.)
 
 ## Quick start
 
 ```julia
-using Edges
+using EdgesGauging
 
 # 1-D edge detection in a pixel profile
 result = gauge_edges_in_profile(profile, 2.0, 0.1,

@@ -1,7 +1,7 @@
 # [API reference](@id api)
 
 ```@meta
-CurrentModule = Edges
+CurrentModule = EdgesGauging
 ```
 
 ## Enumerations

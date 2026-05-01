@@ -1,5 +1,5 @@
 """
-    Edges
+    EdgesGauging
 
 Provides subpixel-accurate edge detection in images and robust geometric
 fitting (line, circle) using RANSAC with outlier rejection.
@@ -7,7 +7,7 @@ fitting (line, circle) using RANSAC with outlier rejection.
 ## Quick start
 
 ```julia
-using Edges
+using EdgesGauging
 
 # 1D edge detection in a pixel profile
 result = gauge_edges_in_profile(profile, 2.0, 0.1, POLARITY_POSITIVE, SELECT_BEST)
@@ -18,7 +18,7 @@ fit = gauge_circle(image, (row_c, col_c), 0.0, 2π, deg2rad(3.0), 80, 2.0, 0.1;
 println("Centre: (", fit.cx, ", ", fit.cy, ")  radius: ", fit.r)
 ```
 """
-module Edges
+module EdgesGauging
 
 # ── Dependencies ──────────────────────────────────────────────────────────────
 # Standard library
@@ -52,7 +52,7 @@ export ScanOrientation, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_T
 export InterpolationMode, INTERP_NEAREST, INTERP_BILINEAR, INTERP_BICUBIC
 
 # Result types
-export EdgeResult, ProfileEdgesResult, ImageEdge
+export EdgeResult, ProfileEdgesGaugingResult, ImageEdge
 export LineFit, CircleFit
 
 # Constraint types
@@ -85,4 +85,4 @@ export arc_completeness, rms_error, segment_length
 # RANSAC engine
 export ransac, ransac2
 
-end # module Edges
+end # module EdgesGauging

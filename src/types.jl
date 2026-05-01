@@ -1,5 +1,5 @@
 """
-Shared enumerations, result structs, and constraint structs for Edges.
+Shared enumerations, result structs, and constraint structs for EdgesGauging.
 """
 
 # ── Enumerations ────────────────────────────────────────────────────────────

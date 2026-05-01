@@ -3,22 +3,22 @@
 #   julia --project=docs docs/make.jl
 
 using Documenter
-using Edges
+using EdgesGauging
 
 DocMeta.setdocmeta!(
-    Edges,
+    EdgesGauging,
     :DocTestSetup,
-    :(using Edges, Random);
+    :(using EdgesGauging, Random);
     recursive = true,
 )
 
 makedocs(
-    modules  = [Edges],
+    modules  = [EdgesGauging],
     authors  = "schrpe",
-    sitename = "Edges.jl",
+    sitename = "EdgesGauging.jl",
     format   = Documenter.HTML(;
         prettyurls = get(ENV, "CI", "false") == "true",
-        canonical  = "https://schrpe.github.io/Edges.jl",
+        canonical  = "https://schrpe.github.io/EdgesGauging.jl",
     ),
     pages = [
         "Home"     => "index.md",

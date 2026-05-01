@@ -1,9 +1,9 @@
 using Test
-using Edges
+using EdgesGauging
 using Random
 using Statistics
 
-@testset "Edges" begin
+@testset "EdgesGauging" begin
     include("test_profile_edges.jl")
     include("test_fitting.jl")
     include("test_models.jl")

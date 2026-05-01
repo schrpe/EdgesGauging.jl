@@ -1,12 +1,12 @@
-using Documenter, Edges, Random
+using Documenter, EdgesGauging, Random
 
 DocMeta.setdocmeta!(
-    Edges,
+    EdgesGauging,
     :DocTestSetup,
-    :(using Edges, Random);
+    :(using EdgesGauging, Random);
     recursive = true,
 )
 
 @testset "Doctests" begin
-    doctest(Edges; manual=false)
+    doctest(EdgesGauging; manual=false)
 end
