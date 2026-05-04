@@ -26,15 +26,13 @@ machine-vision gauging tasks, written in pure Julia.
 ## Install
 
 ```julia
-] add https://github.com/schrpe/EdgesGauging.jl
+] add EdgesGauging
 ```
-
-(Once registered in the General registry: `] add EdgesGauging`.)
 
 ## Example: line and circle on a real part
 
 Using the test image [`test/blob.tif`](test/blob.tif) — a 480×640 grayscale
-photograph of a metal plate — we demonstrate `gauge_line` on the slanted right
+image of a metal plate — demonstrates `gauge_line` on the slanted right
 edge and `gauge_circle` on the upper round hole.
 
 ```julia

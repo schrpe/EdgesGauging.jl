@@ -211,11 +211,20 @@ function main()
               outer = point_thick + 1, inner = point_thick - 1)
     end
 
-    out_path = joinpath(@__DIR__, "..", "test", "blob_example.png")
-    save(out_path, overlay)
+    # Saved to two places:
+    #   test/blob_example.png    — referenced from README.md
+    #   docs/src/blob_example.png — referenced from docs/src/index.md
+    #                                 (must live under docs/src/ so Documenter
+    #                                 copies it into the built site).
+    test_path = joinpath(@__DIR__, "..", "test", "blob_example.png")
+    docs_path = joinpath(@__DIR__, "src", "blob_example.png")
+    save(test_path, overlay)
+    save(docs_path, overlay)
     println()
     println("Annotated overlay saved to ",
-            relpath(out_path, joinpath(@__DIR__, "..")),
+            relpath(test_path, joinpath(@__DIR__, "..")),
+            " and ",
+            relpath(docs_path, joinpath(@__DIR__, "..")),
             "  (size ", size(overlay), ")")
 end
 
