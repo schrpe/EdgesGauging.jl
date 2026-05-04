@@ -49,8 +49,8 @@ line_fit = gauge_line(
     img, (30, 380, 140, 530), LEFT_TO_RIGHT,
     15.0,                         # strip spacing (px)
     3,                            # strip thickness (px)
-    2.0,                          # sigma  – Gaussian smoothing
-    0.05;                         # threshold – min |gradient|
+    2.0,                          # sigma - Gaussian smoothing
+    0.05;                         # threshold - min |gradient|
     polarity = POLARITY_NEGATIVE, # bright metal → dark background
     selector = SELECT_BEST,
 )
