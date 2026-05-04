@@ -4,12 +4,19 @@
 CurrentModule = EdgesGauging
 ```
 
+## Module
+
+```@docs
+EdgesGauging
+```
+
 ## Enumerations
 
 ```@docs
 EdgePolarity
 EdgeSelector
 ScanOrientation
+InterpolationMode
 ```
 
 ## Result types
@@ -36,6 +43,13 @@ CircleConstraints
 GaugingError
 ```
 
+## Profile extraction
+
+```@docs
+extract_line_profile
+extract_arc_profile
+```
+
 ## Edge detection
 
 ```@docs
@@ -51,6 +65,8 @@ gauge_ring_edge_points_info
 ```@docs
 fit_line_tls
 fit_circle_kasa
+fit_circle_taubin
+fit_circle_lm
 fit_parabola
 ```
 

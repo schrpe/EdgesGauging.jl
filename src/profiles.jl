@@ -44,8 +44,8 @@ return the resulting 1-D intensity profile.
   *auto* — picks `max(2, ⌈hypot(Δrow, Δcol)⌉ + 1)` so the centreline samples
   are spaced ≈ 1 px apart.
 - `interp::InterpolationMode = INTERP_BICUBIC`: sampling method —
-  [`INTERP_NEAREST`](@ref), [`INTERP_BILINEAR`](@ref), or
-  [`INTERP_BICUBIC`](@ref). Bicubic is recommended for sub-pixel edge
+  [`INTERP_NEAREST`](@ref InterpolationMode), [`INTERP_BILINEAR`](@ref InterpolationMode), or
+  [`INTERP_BICUBIC`](@ref InterpolationMode). Bicubic is recommended for sub-pixel edge
   detection because the resulting gradient profile is smooth across pixel
   boundaries.
 

@@ -99,7 +99,6 @@ julia> all(point_distance(m, p) < 1e-10 for p in pts)
 true
 ```
 """
-# Default element type is Float64 when no parameter is supplied.
 fit_model(::Type{LineModel}, pts::AbstractVector) = fit_model(LineModel{Float64}, pts)
 
 function fit_model(::Type{LineModel{T}}, pts::AbstractVector) where {T<:AbstractFloat}

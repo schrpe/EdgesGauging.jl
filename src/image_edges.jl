@@ -27,8 +27,9 @@ resulting sub-pixel positions are converted to 2-D image coordinates.
 - `image`: 2-D array (matrix). Any element type convertible to `Float64`.
 - `roi`: `(row_start, col_start, row_end, col_end)`, 1-based inclusive.
   Values are clamped to image bounds, and `row_start > row_end` is swapped.
-- `orientation`: scan direction — one of [`LEFT_TO_RIGHT`](@ref),
-  [`RIGHT_TO_LEFT`](@ref), [`TOP_TO_BOTTOM`](@ref), [`BOTTOM_TO_TOP`](@ref).
+- `orientation`: scan direction — one of [`LEFT_TO_RIGHT`](@ref ScanOrientation),
+  [`RIGHT_TO_LEFT`](@ref ScanOrientation), [`TOP_TO_BOTTOM`](@ref ScanOrientation),
+  [`BOTTOM_TO_TOP`](@ref ScanOrientation).
 - `sigma`, `threshold`, `polarity`, `selector`: forwarded to
   [`gauge_edges_in_profile`](@ref) for each extracted profile.
 - `threaded`: if `true`, scans are processed in parallel with `Threads.@threads`.

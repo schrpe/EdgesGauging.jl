@@ -27,12 +27,12 @@ symmetric gradient kernel, and parabolic sub-pixel interpolation.
   non-positive value to skip smoothing entirely.
 - `threshold`: minimum edge strength (`|gradient|` at the extremum) to report.
   Edges weaker than this are discarded.
-- `polarity`: which gradient directions to detect — [`POLARITY_POSITIVE`](@ref)
-  (dark→bright), [`POLARITY_NEGATIVE`](@ref) (bright→dark), or
-  [`POLARITY_ANY`](@ref) (both).
-- `selector`: how many edges to return per profile — [`SELECT_FIRST`](@ref),
-  [`SELECT_LAST`](@ref), [`SELECT_BEST`](@ref) (strongest), or
-  [`SELECT_ALL`](@ref).
+- `polarity`: which gradient directions to detect — [`POLARITY_POSITIVE`](@ref EdgePolarity)
+  (dark→bright), [`POLARITY_NEGATIVE`](@ref EdgePolarity) (bright→dark), or
+  [`POLARITY_ANY`](@ref EdgePolarity) (both).
+- `selector`: how many edges to return per profile — [`SELECT_FIRST`](@ref EdgeSelector),
+  [`SELECT_LAST`](@ref EdgeSelector), [`SELECT_BEST`](@ref EdgeSelector) (strongest), or
+  [`SELECT_ALL`](@ref EdgeSelector).
 
 # Returns
 A [`ProfileEdgesResult`](@ref) containing:

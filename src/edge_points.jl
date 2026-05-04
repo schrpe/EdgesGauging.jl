@@ -134,8 +134,8 @@ which `gauge_edges_in_profile` handles via NaN-aware smoothing.
 - `profile_length`: number of pixels sampled along each ray.
 - `sigma`, `threshold`, `polarity`, `selector`: forwarded to
   [`gauge_edges_in_profile`](@ref).
-- `interp`: pixel interpolation method — [`INTERP_NEAREST`](@ref),
-  [`INTERP_BILINEAR`](@ref), or [`INTERP_BICUBIC`](@ref) (default).
+- `interp`: pixel interpolation method — [`INTERP_NEAREST`](@ref InterpolationMode),
+  [`INTERP_BILINEAR`](@ref InterpolationMode), or [`INTERP_BICUBIC`](@ref InterpolationMode) (default).
 
 # Returns
 All detected edge points across all rays, collected into a single flat vector
@@ -247,8 +247,8 @@ This is useful when the feature of interest lies within a known distance range
 from a reference point, and avoids false detections from structures inside the
 inner boundary.
 
-Pass `interp` to choose the pixel interpolation method ([`INTERP_NEAREST`](@ref),
-[`INTERP_BILINEAR`](@ref), or [`INTERP_BICUBIC`](@ref) — default).  Samples
+Pass `interp` to choose the pixel interpolation method ([`INTERP_NEAREST`](@ref InterpolationMode),
+[`INTERP_BILINEAR`](@ref InterpolationMode), or [`INTERP_BICUBIC`](@ref InterpolationMode) — default).  Samples
 that fall outside the image yield `NaN` and are handled by the NaN-aware
 edge-detection pipeline.
 

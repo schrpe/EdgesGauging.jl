@@ -52,7 +52,7 @@ export ScanOrientation, LEFT_TO_RIGHT, RIGHT_TO_LEFT, TOP_TO_BOTTOM, BOTTOM_TO_T
 export InterpolationMode, INTERP_NEAREST, INTERP_BILINEAR, INTERP_BICUBIC
 
 # Result types
-export EdgeResult, ProfileEdgesGaugingResult, ImageEdge
+export EdgeResult, ProfileEdgesResult, ImageEdge
 export LineFit, CircleFit
 
 # Constraint types
