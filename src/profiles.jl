@@ -315,7 +315,7 @@ end
 
 Sample `n` pixels along a ray from `(row_c, col_c)` at `angle` (radians,
 CCW from +col axis), spacing 1 px apart starting at the centre.  Used by
-[`gauge_circular_edge_points_info`](@ref).  Out-of-bounds samples are `NaN`
+[`gauge_circular_edge_points`](@ref).  Out-of-bounds samples are `NaN`
 (the `extp` wrapper takes care of that).
 """
 function _sample_radial_profile(
@@ -342,7 +342,7 @@ end
 
 Sample `n` pixels along a ray from `(row_c, col_c)` at `angle`, restricted to
 the radial range `[r_inner, r_outer]`.  Used by
-[`gauge_ring_edge_points_info`](@ref).  Out-of-bounds samples are `NaN`.
+[`gauge_ring_edge_points`](@ref).  Out-of-bounds samples are `NaN`.
 """
 function _sample_ring_profile(
     extp,

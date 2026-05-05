@@ -54,10 +54,10 @@ extract_arc_profile
 
 ```@docs
 gauge_edges_in_profile
-gauge_edges_info
-gauge_edge_points_info
-gauge_circular_edge_points_info
-gauge_ring_edge_points_info
+gauge_edges
+gauge_edge_points
+gauge_circular_edge_points
+gauge_ring_edge_points
 ```
 
 ## Low-level fitting

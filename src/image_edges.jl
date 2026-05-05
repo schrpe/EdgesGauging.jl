@@ -1,17 +1,15 @@
 """
 2D image edge detection.
 
-`gauge_edges_info` dispatches over rows or columns of an image ROI, calls
+`gauge_edges` dispatches over rows or columns of an image ROI, calls
 the 1D [`gauge_edges_in_profile`](@ref) for each profile, and converts the
 resulting 1D subpixel positions back to 2D image coordinates.
-
-Mirrors the C++ `gauge_edges_info()` function.
 """
 
 # ── Public API ───────────────────────────────────────────────────────────────
 
 """
-    gauge_edges_info(image, roi, orientation, sigma, threshold,
+    gauge_edges(image, roi, orientation, sigma, threshold,
                      polarity=POLARITY_ANY, selector=SELECT_ALL;
                      threaded=false)
                      -> Vector{ImageEdge{Float64}}
@@ -45,7 +43,7 @@ scan order (row or column index increases monotonically).
 ```jldoctest
 julia> img = [col < 5 ? 0.0 : 100.0 for _ in 1:4, col in 1:8];
 
-julia> edges = gauge_edges_info(img, (1,1,4,8), LEFT_TO_RIGHT, 0.0, 5.0,
+julia> edges = gauge_edges(img, (1,1,4,8), LEFT_TO_RIGHT, 0.0, 5.0,
                                 POLARITY_POSITIVE, SELECT_FIRST);
 
 julia> length(edges)    # one edge per row
@@ -61,11 +59,11 @@ julia> edges[1].scan_index
 ```jldoctest
 julia> img = fill(128.0, 20, 20);
 
-julia> isempty(gauge_edges_info(img, (1,1,20,20), LEFT_TO_RIGHT, 1.0, 1.0))
+julia> isempty(gauge_edges(img, (1,1,20,20), LEFT_TO_RIGHT, 1.0, 1.0))
 true
 ```
 """
-function gauge_edges_info(
+function gauge_edges(
     image       :: AbstractMatrix,
     roi         :: NTuple{4,Int},
     orientation :: ScanOrientation,

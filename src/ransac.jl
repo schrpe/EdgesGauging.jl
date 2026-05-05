@@ -1,7 +1,7 @@
 """
 Generic RANSAC engine.
 
-Mirrors the two C++ implementations:
+This module provides two implementations:
   - `ransac`  : classic Fischler-Bolles RANSAC with adaptive iteration count.
   - `ransac2` : extended RANSAC that additionally validates model and data
                 constraints after each candidate fit, and adapts its iteration
@@ -162,8 +162,7 @@ end
             initial_outlier_ratio=0.5, rng=default_rng())
             -> (model, inlier_indices, outlier_indices)
 
-Extended RANSAC that validates model constraints after each candidate fit,
-analogous to the C++ `ransac2()`.
+Extended RANSAC that validates model constraints after each candidate fit.
 
 After each successful random fit, [`constraints_met`](@ref) is called to
 reject geometrically inadmissible candidates (e.g. circles with wrong radius).

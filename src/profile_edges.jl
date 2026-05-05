@@ -1,12 +1,12 @@
 """
 1D profile edge detection.
 
-Mirrors the C++ `gauge_edges_info_in_profile()`:
-  1. Gaussian smooth the profile.
-  2. Compute gradient with the [-1, 0, 1] kernel.
-  3. Find gradient extrema with parabolic sub-pixel interpolation.
-  4. Filter by polarity and strength threshold.
-  5. Apply edge selector (first / last / best / all).
+This function performs:
+  1. Gaussian smoothing of the profile.
+  2. Gradient computation with the [-1, 0, 1] kernel.
+  3. Gradient extrema detection with parabolic sub-pixel interpolation.
+  4. Filtering by polarity and strength threshold.
+  5. Edge selection (first / last / best / all).
 """
 
 using Images: imfilter, KernelFactors, centered

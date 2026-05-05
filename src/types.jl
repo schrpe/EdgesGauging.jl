@@ -174,7 +174,7 @@ end
 """
     ImageEdge{T<:AbstractFloat}
 
-A single edge detected in a 2-D image, returned by [`gauge_edges_info`](@ref)
+A single edge detected in a 2-D image, returned by [`gauge_edges`](@ref)
 and related scanning functions.
 
 # Fields
@@ -184,8 +184,8 @@ and related scanning functions.
 - `scan_index::Union{Int,Nothing}`: Index of the row or column profile that
   produced this edge (useful for tracing which strip produced each point), or
   `nothing` for scans that do not have a meaningful strip index (e.g. radial
-  scans produced by [`gauge_circular_edge_points_info`](@ref) and
-  [`gauge_ring_edge_points_info`](@ref)).
+  scans produced by [`gauge_circular_edge_points`](@ref) and
+  [`gauge_ring_edge_points`](@ref)).
 
 # Examples
 ```jldoctest

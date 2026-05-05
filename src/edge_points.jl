@@ -1,10 +1,10 @@
 """
 Multi-strip and radial edge-point scanning.
 
-Mirrors the C++ functions:
-  - `gauge_edge_points_info`          : rectangular multi-strip scan
-  - `gauge_circular_edge_points_info` : radial scan from a centre point
-  - `gauge_ring_edge_points_info`     : radial scan restricted to an annulus
+Provides:
+  - `gauge_edge_points`          : rectangular multi-strip scan
+  - `gauge_circular_edge_points` : radial scan from a centre point
+  - `gauge_ring_edge_points`     : radial scan restricted to an annulus
 """
 
 # Sampling helpers (`_make_interp`, `_sample_radial_profile`,
@@ -14,7 +14,7 @@ Mirrors the C++ functions:
 # ── Multi-strip rectangular scan ─────────────────────────────────────────────
 
 """
-    gauge_edge_points_info(image, roi, orientation, spacing, thickness,
+    gauge_edge_points(image, roi, orientation, spacing, thickness,
                            sigma, threshold,
                            polarity=POLARITY_ANY, selector=SELECT_FIRST)
                            -> Vector{Vector{ImageEdge{Float64}}}
@@ -24,7 +24,7 @@ the detected edge points per strip.
 
 The ROI is divided into strips whose centres are spaced `spacing` pixels apart
 along the scan-perpendicular direction. Each strip is `thickness` pixels wide
-and is scanned with [`gauge_edges_info`](@ref).
+and is scanned with [`gauge_edges`](@ref).
 
 This two-level structure lets callers inspect per-strip results (e.g. to
 detect broken or missing edges) before passing all points to RANSAC.
@@ -45,7 +45,7 @@ perpendicular axis.
 ```jldoctest
 julia> img = [col < 5 ? 0.0 : 100.0 for _ in 1:9, col in 1:8];
 
-julia> strips = gauge_edge_points_info(img, (1,1,9,8), LEFT_TO_RIGHT,
+julia> strips = gauge_edge_points(img, (1,1,9,8), LEFT_TO_RIGHT,
                                        3.0, 1, 0.0, 5.0,
                                        POLARITY_POSITIVE, SELECT_FIRST);
 
@@ -59,7 +59,7 @@ julia> all(all(e.x == 4.5 for e in s) for s in strips)
 true
 ```
 """
-function gauge_edge_points_info(
+function gauge_edge_points(
     image       :: AbstractMatrix,
     roi         :: NTuple{4,Int},
     orientation :: ScanOrientation,
@@ -83,8 +83,8 @@ function gauge_edge_points_info(
             strip_r1 = clamp(round(Int, centre_row - half), r1, r2)
             strip_r2 = clamp(round(Int, centre_row + half), r1, r2)
             strip_roi = (strip_r1, c1, strip_r2, c2)
-            push!(results, gauge_edges_info(image, strip_roi, orientation,
-                                            sigma, threshold, polarity, selector))
+            push!(results, gauge_edges(image, strip_roi, orientation,
+                sigma, threshold, polarity, selector))
             centre_row += spacing
         end
     else
@@ -94,8 +94,8 @@ function gauge_edge_points_info(
             strip_c1 = clamp(round(Int, centre_col - half), c1, c2)
             strip_c2 = clamp(round(Int, centre_col + half), c1, c2)
             strip_roi = (r1, strip_c1, r2, strip_c2)
-            push!(results, gauge_edges_info(image, strip_roi, orientation,
-                                            sigma, threshold, polarity, selector))
+            push!(results, gauge_edges(image, strip_roi, orientation,
+                sigma, threshold, polarity, selector))
             centre_col += spacing
         end
     end
@@ -106,7 +106,7 @@ end
 # ── Circular (radial) scan ────────────────────────────────────────────────────
 
 """
-    gauge_circular_edge_points_info(image, center, start_angle, angular_span,
+    gauge_circular_edge_points(image, center, start_angle, angular_span,
                                     spacing_radians, profile_length,
                                     sigma, threshold,
                                     polarity=POLARITY_ANY, selector=SELECT_FIRST;
@@ -145,7 +145,7 @@ in angular order.
 ```jldoctest
 julia> img = [sqrt((r-10.0)^2+(c-10.0)^2) < 5.0 ? 100.0 : 0.0 for r in 1:20, c in 1:20];
 
-julia> edges = gauge_circular_edge_points_info(img, (10.0,10.0),
+julia> edges = gauge_circular_edge_points(img, (10.0,10.0),
                    0.0, 2π, deg2rad(30.0), 15, 0.5, 5.0,
                    POLARITY_NEGATIVE, SELECT_FIRST);
 
@@ -156,11 +156,11 @@ true
 ```jldoctest
 julia> img = ones(20, 20);
 
-julia> isempty(gauge_circular_edge_points_info(img, (10.0,10.0), 0.0, 2π, 0.0, 10, 1.0, 1.0))
+julia> isempty(gauge_circular_edge_points(img, (10.0,10.0), 0.0, 2π, 0.0, 10, 1.0, 1.0))
 true
 ```
 """
-function gauge_circular_edge_points_info(
+function gauge_circular_edge_points(
     image           :: AbstractMatrix,
     center_rc       :: NTuple{2,Real},
     start_angle     :: Real,
@@ -232,14 +232,14 @@ end
 # ── Ring (annular) scan ───────────────────────────────────────────────────────
 
 """
-    gauge_ring_edge_points_info(image, center, inner_radius, outer_radius,
+    gauge_ring_edge_points(image, center, inner_radius, outer_radius,
                                 start_angle, angular_span, spacing_radians,
                                 sigma, threshold,
                                 polarity=POLARITY_ANY, selector=SELECT_FIRST;
                                 threaded=false, interp=INTERP_BICUBIC)
                                 -> Vector{ImageEdge{Float64}}
 
-Like [`gauge_circular_edge_points_info`](@ref) but limits each radial profile
+Like [`gauge_circular_edge_points`](@ref) but limits each radial profile
 to the annular region between `inner_radius` and `outer_radius` pixels from
 `center_rc`.
 
@@ -258,7 +258,7 @@ Throws `ArgumentError` if `inner_radius >= outer_radius`.
 ```jldoctest
 julia> img = [sqrt((r-10.0)^2+(c-10.0)^2) < 5.0 ? 100.0 : 0.0 for r in 1:20, c in 1:20];
 
-julia> edges = gauge_ring_edge_points_info(img, (10.0,10.0), 3.0, 8.0,
+julia> edges = gauge_ring_edge_points(img, (10.0,10.0), 3.0, 8.0,
                    0.0, 2π, deg2rad(30.0), 0.5, 5.0,
                    POLARITY_NEGATIVE, SELECT_FIRST);
 
@@ -269,13 +269,13 @@ true
 ```jldoctest
 julia> img = ones(20, 20);
 
-julia> gauge_ring_edge_points_info(img, (10.0,10.0), 5.0, 3.0,
+julia> gauge_ring_edge_points(img, (10.0,10.0), 5.0, 3.0,
                                    0.0, 2π, deg2rad(30.0), 1.0, 1.0)
 ERROR: ArgumentError: inner_radius must be less than outer_radius
 [...]
 ```
 """
-function gauge_ring_edge_points_info(
+function gauge_ring_edge_points(
     image           :: AbstractMatrix,
     center_rc       :: NTuple{2,Real},
     inner_radius    :: Real,

@@ -13,12 +13,12 @@
          for row in 1:nrows, col in 1:ncols]
     end
 
-    # ── gauge_edge_points_info ────────────────────────────────────────────────
+    # ── gauge_edge_points ────────────────────────────────────────────────
 
     @testset "multi-strip: one strip per spacing step" begin
         img = vimg(50)
         roi = (10, 5, 90, 95)
-        strips = gauge_edge_points_info(img, roi, LEFT_TO_RIGHT, 10.0, 3, 1.5, 20.0,
+        strips = gauge_edge_points(img, roi, LEFT_TO_RIGHT, 10.0, 3, 1.5, 20.0,
                                         POLARITY_POSITIVE, SELECT_FIRST)
         # rows 10–90 with spacing 10 → strips centred at rows 10,20,...,90 → 9 strips
         @test length(strips) >= 8
@@ -34,7 +34,7 @@
     @testset "multi-strip: TOP_TO_BOTTOM finds horizontal edge" begin
         img = [r < 50 ? 0.0 : 200.0 for r in 1:100, _ in 1:100]
         roi = (5, 10, 95, 90)
-        strips = gauge_edge_points_info(img, roi, TOP_TO_BOTTOM, 10.0, 3, 1.5, 20.0,
+        strips = gauge_edge_points(img, roi, TOP_TO_BOTTOM, 10.0, 3, 1.5, 20.0,
                                         POLARITY_POSITIVE, SELECT_FIRST)
         @test length(strips) >= 8
         for strip in strips
@@ -48,16 +48,16 @@
     @testset "multi-strip: empty strips when threshold too high" begin
         img = vimg(50)
         roi = (10, 5, 90, 95)
-        strips = gauge_edge_points_info(img, roi, LEFT_TO_RIGHT, 10.0, 3, 1.5, 10_000.0)
+        strips = gauge_edge_points(img, roi, LEFT_TO_RIGHT, 10.0, 3, 1.5, 10_000.0)
         @test all(isempty(s) for s in strips)
     end
 
-    # ── gauge_circular_edge_points_info ───────────────────────────────────────
+    # ── gauge_circular_edge_points ───────────────────────────────────────
 
     @testset "circular scan: detects disc boundary near known radius" begin
         img = disc_image(100, 100, 40)
         # Scan from centre outward: bright→dark transition at r≈40
-        edges = gauge_circular_edge_points_info(
+        edges = gauge_circular_edge_points(
             img, (100.0, 100.0),
             0.0, 2π, deg2rad(5.0), 80,
             1.5, 20.0, POLARITY_NEGATIVE, SELECT_FIRST)
@@ -70,7 +70,7 @@
         @test all(isnothing(e.scan_index) for e in edges)
 
         # threaded=true must produce the same edges in the same order
-        threaded = gauge_circular_edge_points_info(
+        threaded = gauge_circular_edge_points(
             img, (100.0, 100.0),
             0.0, 2π, deg2rad(5.0), 80,
             1.5, 20.0, POLARITY_NEGATIVE, SELECT_FIRST; threaded=true)
@@ -80,7 +80,7 @@
 
     @testset "circular scan: partial arc (π radians)" begin
         img = disc_image(100, 100, 35)
-        edges = gauge_circular_edge_points_info(
+        edges = gauge_circular_edge_points(
             img, (100.0, 100.0),
             0.0, π, deg2rad(5.0), 70,
             1.5, 20.0, POLARITY_NEGATIVE, SELECT_FIRST)
@@ -92,16 +92,16 @@
 
     @testset "circular scan: spacing_radians=0 returns empty" begin
         img = disc_image()
-        edges = gauge_circular_edge_points_info(
+        edges = gauge_circular_edge_points(
             img, (100.0, 100.0), 0.0, 2π, 0.0, 80, 1.5, 20.0)
         @test isempty(edges)
     end
 
-    # ── gauge_ring_edge_points_info ───────────────────────────────────────────
+    # ── gauge_ring_edge_points ───────────────────────────────────────────
 
     @testset "ring scan: detects edge within annulus" begin
         img = disc_image(100, 100, 40)
-        edges = gauge_ring_edge_points_info(
+        edges = gauge_ring_edge_points(
             img, (100.0, 100.0),
             20.0, 60.0,       # annulus: inner=20, outer=60
             0.0, 2π, deg2rad(5.0),
@@ -115,7 +115,7 @@
     @testset "ring scan: edge outside annulus is not reported" begin
         # Disc radius=40; ring only covers r∈[50,80] → no edge in that range
         img = disc_image(100, 100, 40)
-        edges = gauge_ring_edge_points_info(
+        edges = gauge_ring_edge_points(
             img, (100.0, 100.0),
             50.0, 80.0,
             0.0, 2π, deg2rad(5.0),
@@ -126,15 +126,15 @@
 
     @testset "ring scan: inner_radius >= outer_radius throws" begin
         img = disc_image()
-        @test_throws ArgumentError gauge_ring_edge_points_info(
+        @test_throws ArgumentError gauge_ring_edge_points(
             img, (100.0, 100.0), 50.0, 30.0, 0.0, 2π, deg2rad(5.0), 1.5, 10.0)
-        @test_throws ArgumentError gauge_ring_edge_points_info(
+        @test_throws ArgumentError gauge_ring_edge_points(
             img, (100.0, 100.0), 40.0, 40.0, 0.0, 2π, deg2rad(5.0), 1.5, 10.0)
     end
 
     @testset "ring scan: spacing_radians=0 returns empty" begin
         img = disc_image()
-        edges = gauge_ring_edge_points_info(
+        edges = gauge_ring_edge_points(
             img, (100.0, 100.0), 20.0, 60.0, 0.0, 2π, 0.0, 1.5, 10.0)
         @test isempty(edges)
     end
@@ -143,7 +143,7 @@
 
     @testset "circular scan: bilinear interp finds disc boundary" begin
         img = disc_image(100, 100, 40)
-        edges = gauge_circular_edge_points_info(
+        edges = gauge_circular_edge_points(
             img, (100.0, 100.0),
             0.0, 2π, deg2rad(5.0), 80,
             1.5, 20.0, POLARITY_NEGATIVE, SELECT_FIRST;
@@ -155,7 +155,7 @@
 
     @testset "circular scan: nearest interp finds disc boundary (coarser)" begin
         img = disc_image(100, 100, 40)
-        edges = gauge_circular_edge_points_info(
+        edges = gauge_circular_edge_points(
             img, (100.0, 100.0),
             0.0, 2π, deg2rad(5.0), 80,
             1.5, 20.0, POLARITY_NEGATIVE, SELECT_FIRST;
@@ -169,7 +169,7 @@
         # Disc near the corner; a few rays will leave the image partway through.
         img = disc_image(40, 40, 25, 100, 100)
         # Profile length 90 from centre (40, 40) — many rays go OOB
-        edges = gauge_circular_edge_points_info(
+        edges = gauge_circular_edge_points(
             img, (40.0, 40.0),
             0.0, 2π, deg2rad(10.0), 90,
             1.5, 20.0, POLARITY_NEGATIVE, SELECT_FIRST)
@@ -181,7 +181,7 @@
     @testset "ring scan: interp kwarg is accepted" begin
         img = disc_image(100, 100, 40)
         for mode in (INTERP_NEAREST, INTERP_BILINEAR, INTERP_BICUBIC)
-            edges = gauge_ring_edge_points_info(
+            edges = gauge_ring_edge_points(
                 img, (100.0, 100.0),
                 20.0, 60.0,
                 0.0, 2π, deg2rad(5.0),

@@ -1,8 +1,6 @@
 """
 High-level gauging functions that chain edge-point collection with RANSAC fitting.
 
-Mirrors the C++ `gauge_line()` and `gauge_circle()`.
-
 Each function follows the same three-step pipeline:
   1. Detect edge points (strips or radial profiles).
   2. Fit a geometric model with constraint-aware RANSAC ([`ransac2`](@ref)).
@@ -21,12 +19,12 @@ Each function follows the same three-step pipeline:
 Detect edge points along parallel strips within `roi`, then fit a line with
 RANSAC outlier rejection.
 
-The function chains [`gauge_edge_points_info`](@ref) → [`ransac2`](@ref) →
+The function chains [`gauge_edge_points`](@ref) → [`ransac2`](@ref) →
 [`LineFit`](@ref).
 
 # Arguments
 - `roi`, `orientation`, `spacing`, `thickness`, `sigma`, `threshold`,
-  `polarity`, `selector`: passed to [`gauge_edge_points_info`](@ref).
+  `polarity`, `selector`: passed to [`gauge_edge_points`](@ref).
 - `constraints`: [`LineConstraints`](@ref) to enforce angle and inlier limits.
 - `confidence`: RANSAC confidence level (default 0.99).
 - `inlier_threshold`: maximum perpendicular distance (pixels) to count a point
@@ -73,9 +71,9 @@ function gauge_line(
     max_iter         :: Int                   = 10_000,
 ) :: LineFit{Float64}
 
-    strip_results = gauge_edge_points_info(image, roi, orientation,
-                                           spacing, thickness,
-                                           sigma, threshold, polarity, selector)
+    strip_results = gauge_edge_points(image, roi, orientation,
+        spacing, thickness,
+        sigma, threshold, polarity, selector)
     pts = _flatten_to_xy(strip_results)
     length(pts) < 2 && throw(GaugingError(:too_few_points,
         "gauge_line: too few edge points detected ($(length(pts)))"))
@@ -105,7 +103,7 @@ end
 Detect edge points along radial profiles from `center_rc` and fit a circle with
 RANSAC outlier rejection.
 
-The function chains [`gauge_circular_edge_points_info`](@ref) → [`ransac2`](@ref)
+The function chains [`gauge_circular_edge_points`](@ref) → [`ransac2`](@ref)
 (which rejects arc-incomplete candidates via [`data_constraints_met`](@ref))
 → [`CircleFit`](@ref).
 
@@ -113,7 +111,7 @@ The function chains [`gauge_circular_edge_points_info`](@ref) → [`ransac2`](@r
 - `center_rc`: `(row, col)` of the approximate circle centre (1-based). The
   `_rc` suffix is a reminder that this is **(row, col)**, not `(x, y)`.
 - `start_angle`, `angular_span`, `spacing_radians`, `profile_length`: passed to
-  [`gauge_circular_edge_points_info`](@ref).
+  [`gauge_circular_edge_points`](@ref).
 - `sigma`, `threshold`, `polarity`, `selector`: edge detection parameters.
 - `constraints`: [`CircleConstraints`](@ref) to enforce radius limits and arc
   completeness.
@@ -171,9 +169,9 @@ function gauge_circle(
     refine           :: Bool                   = false,
 ) :: CircleFit{Float64}
 
-    edge_pts = gauge_circular_edge_points_info(image, center_rc,
-                   start_angle, angular_span, spacing_radians, profile_length,
-                   sigma, threshold, polarity, selector)
+    edge_pts = gauge_circular_edge_points(image, center_rc,
+        start_angle, angular_span, spacing_radians, profile_length,
+        sigma, threshold, polarity, selector)
     pts = [(e.x, e.y) for e in edge_pts]
     length(pts) < 3 && throw(GaugingError(:too_few_points,
         "gauge_circle: too few edge points detected ($(length(pts)))"))

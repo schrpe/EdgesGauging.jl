@@ -57,9 +57,9 @@ function main()
                              length(line_fit.inliers) + length(line_fit.outliers))
 
     # Re-collect the same edge points the gauge consumed, so we can colour
-    # inliers vs outliers on the overlay. `gauge_edge_points_info` is purely
+    # inliers vs outliers on the overlay. `gauge_edge_points` is purely
     # deterministic (no RNG), so this does not perturb the RANSAC seed.
-    line_strips = gauge_edge_points_info(
+    line_strips = gauge_edge_points(
         img, line_roi, LEFT_TO_RIGHT,
         line_spacing, line_thick_strips,
         line_sigma, line_thresh,
@@ -98,7 +98,7 @@ function main()
     println("  inliers          = ", length(circle_fit.inliers), " / ",
             length(circle_fit.inliers) + length(circle_fit.outliers))
 
-    circle_edges = gauge_circular_edge_points_info(
+    circle_edges = gauge_circular_edge_points(
         img, centre_rc,
         0.0, 2π, spacing_rad, profile_length,
         2.0, 0.05,

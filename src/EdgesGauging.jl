@@ -66,10 +66,10 @@ export extract_line_profile, extract_arc_profile
 
 # Edge detection
 export gauge_edges_in_profile
-export gauge_edges_info
-export gauge_edge_points_info
-export gauge_circular_edge_points_info
-export gauge_ring_edge_points_info
+export gauge_edges
+export gauge_edge_points
+export gauge_circular_edge_points
+export gauge_ring_edge_points
 
 # Fitting (low-level, no RANSAC)
 export fit_line_tls, fit_circle_kasa, fit_circle_taubin, fit_circle_lm, fit_parabola
